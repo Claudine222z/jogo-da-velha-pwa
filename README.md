@@ -2,6 +2,20 @@
 
 Um jogo da velha completo com 5 níveis de dificuldade, desenvolvido como PWA (Progressive Web App) para Android.
 
+## 🚀 **IMPORTANTE: Ativar GitHub Pages**
+
+Para que o PWA funcione corretamente, você precisa ativar o GitHub Pages:
+
+1. **Vá para**: https://github.com/Claudine222z/jogo-da-velha-pwa
+2. **Clique em "Settings"** (aba superior)
+3. **Role para baixo até "Pages"** (menu lateral esquerdo)
+4. **Em "Source", selecione**: "Deploy from a branch"
+5. **Escolha a branch**: "main"
+6. **Clique "Save"**
+7. **Aguarde 2-3 minutos** para o deploy
+
+**URL do jogo**: https://claudine222z.github.io/jogo-da-velha-pwa/
+
 ## ✨ Características
 
 - **5 Níveis de Dificuldade**: Do fácil ao expert
