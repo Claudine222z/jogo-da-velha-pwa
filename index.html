@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jogo da Velha - 5 Níveis</title>
+    <meta name="description" content="Jogo da Velha com 5 níveis de dificuldade - PWA para Android">
+    <meta name="theme-color" content="#2196F3">
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/png" href="icons/icon-192x192.png">
+    <link rel="apple-touch-icon" href="icons/icon-192x192.png">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎮 Jogo da Velha</h1>
+            <div class="game-info">
+                <div class="score">
+                    <span>Você: <span id="player-score">0</span></span>
+                    <span>CPU: <span id="cpu-score">0</span></span>
+                </div>
+                <div class="level-info">
+                    <span>Nível: <span id="current-level">1</span></span>
+                    <span>Dificuldade: <span id="difficulty-name">Fácil</span></span>
+                </div>
+            </div>
+        </header>
+
+        <main>
+            <div class="game-board">
+                <div class="cell" data-index="0"></div>
+                <div class="cell" data-index="1"></div>
+                <div class="cell" data-index="2"></div>
+                <div class="cell" data-index="3"></div>
+                <div class="cell" data-index="4"></div>
+                <div class="cell" data-index="5"></div>
+                <div class="cell" data-index="6"></div>
+                <div class="cell" data-index="7"></div>
+                <div class="cell" data-index="8"></div>
+            </div>
+
+            <div class="controls">
+                <button id="new-game-btn" class="btn primary">Novo Jogo</button>
+                <button id="level-btn" class="btn secondary">Mudar Nível</button>
+                <button id="reset-scores-btn" class="btn secondary">Resetar Pontuação</button>
+            </div>
+
+            <div class="status">
+                <p id="status-message">Seu turno! Clique em uma célula para jogar.</p>
+            </div>
+        </main>
+
+        <div id="level-modal" class="modal">
+            <div class="modal-content">
+                <h2>Escolha o Nível</h2>
+                <div class="level-options">
+                    <button class="level-option" data-level="1">
+                        <span class="level-number">1</span>
+                        <span class="level-name">Fácil</span>
+                        <span class="level-desc">CPU faz jogadas aleatórias</span>
+                    </button>
+                    <button class="level-option" data-level="2">
+                        <span class="level-number">2</span>
+                        <span class="level-name">Iniciante</span>
+                        <span class="level-desc">CPU bloqueia vitórias óbvias</span>
+                    </button>
+                    <button class="level-option" data-level="3">
+                        <span class="level-number">3</span>
+                        <span class="level-name">Intermediário</span>
+                        <span class="level-desc">CPU busca vitórias e bloqueia</span>
+                    </button>
+                    <button class="level-option" data-level="4">
+                        <span class="level-number">4</span>
+                        <span class="level-name">Difícil</span>
+                        <span class="level-desc">CPU usa estratégia avançada</span>
+                    </button>
+                    <button class="level-option" data-level="5">
+                        <span class="level-number">5</span>
+                        <span class="level-name">Expert</span>
+                        <span class="level-desc">CPU é praticamente invencível</span>
+                    </button>
+                </div>
+                <button id="close-modal" class="btn primary">Fechar</button>
+            </div>
+        </div>
+
+        <div id="game-over-modal" class="modal">
+            <div class="modal-content">
+                <h2 id="game-over-title">Fim de Jogo</h2>
+                <p id="game-over-message"></p>
+                <div class="game-over-buttons">
+                    <button id="play-again-btn" class="btn primary">Jogar Novamente</button>
+                    <button id="new-game-modal-btn" class="btn secondary">Novo Jogo</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+    <script src="sw.js"></script>
+</body>
+</html> 

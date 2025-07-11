@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerador de Ícones - Jogo da Velha</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .icon-container {
+            display: inline-block;
+            margin: 10px;
+            text-align: center;
+            background: white;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .icon-container canvas {
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .icon-container p {
+            margin: 5px 0 0 0;
+            font-size: 12px;
+            color: #666;
+        }
+        button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #5a6fd8;
+        }
+    </style>
+</head>
+<body>
+    <h1>Gerador de Ícones - Jogo da Velha</h1>
+    <p>Clique nos botões abaixo para gerar e baixar os ícones em diferentes tamanhos:</p>
+    
+    <div id="icon-containers"></div>
+    
+    <script>
+        const sizes = [72, 96, 128, 144, 152, 192, 384, 512];
+        
+        function createIcon(size) {
+            const canvas = document.createElement('canvas');
+            canvas.width = size;
+            canvas.height = size;
+            const ctx = canvas.getContext('2d');
+            
+            // Background gradient
+            const gradient = ctx.createLinearGradient(0, 0, size, size);
+            gradient.addColorStop(0, '#667eea');
+            gradient.addColorStop(1, '#764ba2');
+            
+            // Draw background
+            ctx.fillStyle = gradient;
+            ctx.beginPath();
+            ctx.roundRect(0, 0, size, size, size * 0.125);
+            ctx.fill();
+            
+            // Calculate scaling
+            const scale = size / 192;
+            const offset = size * 0.1875; // 36/192
+            const gridSize = size * 0.625; // 120/192
+            
+            // Draw grid lines
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
+            ctx.lineWidth = size * 0.0208; // 4/192
+            ctx.beginPath();
+            ctx.moveTo(offset + gridSize * 0.333, offset);
+            ctx.lineTo(offset + gridSize * 0.333, offset + gridSize);
+            ctx.moveTo(offset + gridSize * 0.667, offset);
+            ctx.lineTo(offset + gridSize * 0.667, offset + gridSize);
+            ctx.moveTo(offset, offset + gridSize * 0.333);
+            ctx.lineTo(offset + gridSize, offset + gridSize * 0.333);
+            ctx.moveTo(offset, offset + gridSize * 0.667);
+            ctx.lineTo(offset + gridSize, offset + gridSize * 0.667);
+            ctx.stroke();
+            
+            // Draw X in top-left
+            ctx.strokeStyle = 'white';
+            ctx.lineWidth = size * 0.03125; // 6/192
+            ctx.lineCap = 'round';
+            ctx.beginPath();
+            ctx.moveTo(offset + gridSize * 0.083, offset + gridSize * 0.083);
+            ctx.lineTo(offset + gridSize * 0.25, offset + gridSize * 0.25);
+            ctx.moveTo(offset + gridSize * 0.25, offset + gridSize * 0.083);
+            ctx.lineTo(offset + gridSize * 0.083, offset + gridSize * 0.25);
+            ctx.stroke();
+            
+            // Draw O in center
+            ctx.beginPath();
+            ctx.arc(offset + gridSize * 0.5, offset + gridSize * 0.5, gridSize * 0.125, 0, 2 * Math.PI);
+            ctx.stroke();
+            
+            // Draw X in bottom-right
+            ctx.beginPath();
+            ctx.moveTo(offset + gridSize * 0.75, offset + gridSize * 0.75);
+            ctx.lineTo(offset + gridSize * 0.917, offset + gridSize * 0.917);
+            ctx.moveTo(offset + gridSize * 0.917, offset + gridSize * 0.75);
+            ctx.lineTo(offset + gridSize * 0.75, offset + gridSize * 0.917);
+            ctx.stroke();
+            
+            // Draw level indicator
+            ctx.fillStyle = '#2ecc71';
+            ctx.beginPath();
+            ctx.arc(size * 0.833, size * 0.167, size * 0.083, 0, 2 * Math.PI);
+            ctx.fill();
+            
+            // Draw level number
+            ctx.fillStyle = 'white';
+            ctx.font = `bold ${size * 0.0625}px Arial`;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('5', size * 0.833, size * 0.167);
+            
+            return canvas;
+        }
+        
+        function downloadIcon(size) {
+            const canvas = createIcon(size);
+            const link = document.createElement('a');
+            link.download = `icon-${size}x${size}.png`;
+            link.href = canvas.toDataURL();
+            link.click();
+        }
+        
+        function createIconContainer(size) {
+            const container = document.createElement('div');
+            container.className = 'icon-container';
+            
+            const canvas = createIcon(size);
+            container.appendChild(canvas);
+            
+            const label = document.createElement('p');
+            label.textContent = `${size}x${size}`;
+            container.appendChild(label);
+            
+            const downloadBtn = document.createElement('button');
+            downloadBtn.textContent = 'Baixar';
+            downloadBtn.onclick = () => downloadIcon(size);
+            container.appendChild(downloadBtn);
+            
+            return container;
+        }
+        
+        // Initialize
+        const containersDiv = document.getElementById('icon-containers');
+        sizes.forEach(size => {
+            containersDiv.appendChild(createIconContainer(size));
+        });
+        
+        // Add roundRect polyfill for older browsers
+        if (!CanvasRenderingContext2D.prototype.roundRect) {
+            CanvasRenderingContext2D.prototype.roundRect = function(x, y, width, height, radius) {
+                this.beginPath();
+                this.moveTo(x + radius, y);
+                this.lineTo(x + width - radius, y);
+                this.quadraticCurveTo(x + width, y, x + width, y + radius);
+                this.lineTo(x + width, y + height - radius);
+                this.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+                this.lineTo(x + radius, y + height);
+                this.quadraticCurveTo(x, y + height, x, y + height - radius);
+                this.lineTo(x, y + radius);
+                this.quadraticCurveTo(x, y, x + radius, y);
+                this.closePath();
+            };
+        }
+    </script>
+</body>
+</html> 
